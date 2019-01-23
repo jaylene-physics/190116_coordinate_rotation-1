@@ -39,7 +39,7 @@ R_yaw = R_yaw(yaw)
 R_pitch = R_pitch(pitch)
 R_roll = R_roll(roll)
 R_axis = R_axis()
-C = R_axis*R_roll*R_pitch*R_yaw*T
+C = R_axis.dot(R_roll).dot(R_pitch).dot(R_yaw).dot(T)
 x = []
 y = []
 z = []
@@ -47,17 +47,23 @@ I = []
 
 for index, coord in ene_coords.iterrows():
   np_coord = np.array(coord)
-  x_diff = (np_coord-cam_coords)
-  x_diff = np.append(x_diff, 1)
-  x_diff = x_diff[np.newaxis].T
-  xyz_coords = C*x_diff
-  print(xyz_coords)
+  np_coord = np.append(coord, 1)
+  xyz_coords = C.dot(np_coord).T 
   x.append(xyz_coords[0])
   y.append(xyz_coords[1])
   z.append(xyz_coords[2])
 
 z = [float(s) for s in z]
 cm = plt.get_cmap('jet')
+cNorm = colors.Normalize(vmin=min(z), vmax=max(z))
+scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
+fig = plt.figure()
+ax = Axes3D(fig)
+scale = scalarMap.to_rgba(z)
+ax.scatter(x, y, z)
+scalarMap.set_array(z)
+fig.colorbar(scalarMap)
+plt.show()
 cNorm = colors.Normalize(vmin=min(z), vmax=max(z))
 scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
 fig = plt.figure()
