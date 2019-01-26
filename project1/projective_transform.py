@@ -1,16 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def projective_transform(X, X_cam, f, width, height):
-  focal_length = focal_length # pixels
-  sensor_u = width # pixels
-  sensor_v = height # pixels
+def projective_transform(self,X_world):
+  focal_length = self.f # pixels
+  sensor_u = self.width # pixels
+  sensor_v = self.height # pixels
 
   list_u = []
   list_v = []
   #list_I = []
 
-  for X_point in X():
+  for X_point in X_world.itterows():
     x = X_point[0]/X_point[2]
     y = X_pointl[1]/X_point[2]
      
