@@ -1,26 +1,22 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def projective_transform(self,X_world):
-  focal_length = self.f # pixels
-  sensor_u = self.width # pixels
-  sensor_v = self.height # pixels
+def projective_transform(focal_length, sensor_u, sensor_v, pose, X_world):
 
   list_u = []
   list_v = []
   #list_I = []
 
-  for X_point in X_world.itterows():
+  for X_point in X_world:
     x = X_point[0]/X_point[2]
-    y = X_pointl[1]/X_point[2]
+    y = X_point[1]/X_point[2]
      
-    u = x*focal_length + sensor_u/2
-    v = y*focal_length + sensor_v/2
+    u = x*focal_length + sensor_u/2.0
+    v = y*focal_length + sensor_v/2.0
     
     list_u.append(u)
     list_v.append(v)
     #list_I.append(pixel[3])
-
   return list_u, list_v
   #axes = plt.gca()
   #axes.set_xlim(0,sensor_u)
