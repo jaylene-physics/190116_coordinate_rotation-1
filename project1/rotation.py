@@ -8,22 +8,33 @@ from mpl_toolkits.mplot3d import Axes3D
 import pandas as pd
 
 def Trans(cam_coords):
-  return np.matrix([[1,0,0,-cam_coords[0]],[0,1,0,-cam_coords[1]],[0,0,1,-cam_coords[2]],[0,0,0,1]])
+  return np.matrix([[1, 0, 0, -cam_coords[0]],
+                    [0, 1, 0, -cam_coords[1]],
+                    [0, 0, 1, -cam_coords[2]],
+                    [0, 0, 0,             1]])
 
 def R_yaw_trans(yaw):
-  return np.matrix([[np.cos(yaw),-np.sin(yaw),0,0],[np.sin(yaw),np.cos(yaw),0,0],[0,0,1,0]])
+  return np.matrix([[np.cos(yaw), -np.sin(yaw), 0, 0],
+                    [np.sin(yaw),  np.cos(yaw), 0, 0],
+                    [          0,            0, 1, 0]])
 
 def R_pitch_trans(pitch):
-  return np.matrix([[1,0,0],[0,np.cos(pitch),np.sin(pitch)],[0,-np.sin(pitch),np.cos(pitch)]])
+  return np.matrix([[1,              0,             0],
+                    [0,  np.cos(pitch), np.sin(pitch)],
+                    [0, -np.sin(pitch), np.cos(pitch)]])
 
 def R_roll_trans(roll):
-  return np.matrix([[np.cos(roll),0,-np.sin(roll)],[0,1,0],[np.sin(roll),0,np.cos(roll)]])
+  return np.matrix([[np.cos(roll), 0, -np.sin(roll)],
+                    [0,            1,             0],
+                    [np.sin(roll), 0, np.cos(roll)]])
 
 def R_axis_trans():
-  return np.matrix([[1,0,0],[0,0,-1],[0,1,0]])
+  return np.matrix([[1, 0, 0],
+                    [0, 0,-1],
+                    [0, 1, 0]])
 
 def rotate(pose, X_world):
-  #camera coords  [easting, northing , elevation, yaw, pitch ,roll]
+  #camera coords  [easting, northing, elevation, yaw, pitch ,roll]
   easting =  pose[0]
   northing = pose[1]
   elevation = pose[2]
@@ -55,3 +66,7 @@ def rotate(pose, X_world):
     z.append(xyz_coords.item(2))
 
   return x, y, z
+
+  #############################################################################
+  ##############################       MAIN     ###############################
+  #############################################################################
