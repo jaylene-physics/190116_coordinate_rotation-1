@@ -5,8 +5,8 @@ from skimage import io
 from pandas import read_csv
 
 # local imports
-from project1.projective_transform import projective_transform
-from project1.rotation import rotate
+from projective_transform import *
+from rotation import * 
 
 
 class Camera(object):
