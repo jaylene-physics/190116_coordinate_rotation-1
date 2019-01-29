@@ -1,9 +1,10 @@
-from projective_transform import *
-from rotation import *
-from scipy.optimize import least_squares
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.optimize import least_squares
 from skimage import io
+
+from project1.projective_transform import projective_transform
+from project1.rotation import rotate
 
 f_length35  = 35.0
 width = 6000
@@ -42,14 +43,12 @@ class Camera(object):
       return pose_Opt
 
 Camera = Camera(f_length,width,length)
-#print(Camera.residual([150000,1.5e5,0,0,0,0], Camera, X_world, X_cam))
-#print(Camera.residual(Camera.p, Camera, X_world, X_cam))
-Pose = Camera.estimate_pose(Camera.p,X_world,X_cam).x
+Pose = Camera.estimate_pose(Camera.p, X_world, X_cam).x
 
 new_rotate = Camera.rotational_transform(Pose, X_world)
 new_transform = Camera.projective_transform_project(Pose, new_rotate).T
 fig, ax = plt.subplots(1, figsize=(12,8))
 ax.imshow(io.imread("DSCF3272.JPG"))
-ax.scatter(world_coords.iloc[:,0],world_coords.iloc[:,1],c="red",s=100)
-ax.scatter(new_transform[0], new_transform[1],c="green",s=100)
-plt.show(fig)
+ax.scatter(world_coords.iloc[:, 0], world_coords.iloc[:, 1], c="red", s=100)
+ax.scatter(new_transform[0], new_transform[1], c="green", s=100)
+plt.show()
