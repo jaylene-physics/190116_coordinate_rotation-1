@@ -3,4 +3,4 @@ u|v|easting|northing|elevation|name
 5324|2756|272680.0|5194062.0|998|UC NorthEast Corner
 335|2618|272604.24|5193885.80|996|Library - NorthWest Corner
 4552|2188|272285.76|5194247.13|997|Buisiness Building - Roof
-371|2116|272190.40|5194109.62|1017|Jesse Hall
+3124|1986|272190.40|5194109.62|1017|Jesse Hall
