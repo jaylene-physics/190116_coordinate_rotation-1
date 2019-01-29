@@ -2,10 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import least_squares
 from skimage import io
+from pandas import read_csv
 
 # local imports
-from projective_transform import *
-from rotation import *
+from project1.projective_transform import projective_transform
+from project1.rotation import rotate
 
 
 class Camera(object):
@@ -58,7 +59,7 @@ frankie_photo = {
     'length': 4000,
     'pose_guess': [272510.0, 5193893.0, 1000.0, 3.14/2.0, 0, 0],
     'img': 'FrankiePhoto.jpg',
-    'gcp': 'FrankiePhoto_GCP.txt',
+    'gcp': 'FrankiePhoto_GCP_DK.txt',
     'delimiter': '|',
     'header': 0
 }
@@ -78,11 +79,11 @@ doug_photo = {
 }
 
 # Choose Photo Here!
-photo = doug_photo
+photo = frankie_photo
 photo['f_length'] = photo['f_length']/photo['sensor_size']*photo['width']
 
 # Known data points
-world_coords = pd.read_csv(photo['gcp'], delimiter=photo['delimiter'], header=photo['header'])
+world_coords = read_csv(photo['gcp'], delimiter=photo['delimiter'], header=photo['header'])
 X_world = world_coords.iloc[:,2:5] #real world coordinates
 X_cam = world_coords.iloc[:,0:2] # pixel coordinates OR OBSERVED VALUES
 
@@ -98,4 +99,4 @@ fig, ax = plt.subplots(1, figsize=(12,8))
 ax.imshow(io.imread(photo['img']))
 ax.scatter(X_cam.iloc[:,0],X_cam.iloc[:,1],c="red",s=100)
 ax.scatter(X_cam_pred[:, 0], X_cam_pred[:, 1],c="green",s=100)
-plt.show(fig)
+plt.show()
