@@ -57,7 +57,7 @@ frankie_photo = {
     'sensor_size': 23.5,
     'width': 6000,
     'length': 4000,
-    'pose_guess': [272510.0, 5193893.0, 1000.0, 3.14/2.0, 0, 0],
+    'pose_guess': [272990.0, 5193880.0, 1109.0, -3.14/2.0, 0, 0],
     'img': 'FrankiePhoto.jpg',
     'gcp': 'FrankiePhoto_GCP_DK.txt',
     'delimiter': '|',
