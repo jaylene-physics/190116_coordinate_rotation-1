@@ -4,8 +4,8 @@ from scipy.optimize import least_squares
 from skimage import io
 
 # local imports
-from project1.projective_transform import projective_transform
-from project1.rotation import rotate
+from projective_transform import *
+from rotation import *
 
 
 class Camera(object):
@@ -56,9 +56,11 @@ frankie_photo = {
     'sensor_size': 23.5,
     'width': 6000,
     'length': 4000,
-    'pose_guess': [272510.0,5193893.0,1000.0,3.14/2.0,0,0],
+    'pose_guess': [272510.0, 5193893.0, 1000.0, 3.14/2.0, 0, 0],
     'img': 'FrankiePhoto.jpg',
-    'gcp': 'FrankiePhoto_GCP.txt'
+    'gcp': 'FrankiePhoto_GCP.txt',
+    'delimiter': '|',
+    'header': 0
 }
 
 # Doug's Photo #1
@@ -67,23 +69,25 @@ doug_photo = {
     'sensor_size': 36.0,
     'width': 3264,
     'length': 2448,
-    'pose_guess': [272510.0,5193893.0,1000.0,3.14/2.0,0,0],
-    'pose_true': [272470.0,5193991.0,985.0,1.97,0.214,0.01], #correct answer verified by Doug
-    'img': 'DougPhoto.jpg'
-    'gcp': 'DougPhoto_GCP.txt'
+    'pose_guess': [272510.0,5193893.0, 1000.0, 3.14/2.0, 0, 0],
+    'pose_true': [272470.0,5193991.0, 985.0, 1.97, 0.214, 0.01], #correct answer verified by Doug
+    'img': 'DougPhoto.jpg',
+    'gcp': 'DougPhoto_GCP.txt',
+    'delimiter': ',',
+    'header': None
 }
 
 # Choose Photo Here!
-photo_in_use = doug_specs
-photo_in_use.f_length = f_length/sensor_size*width
+photo = doug_photo
+photo['f_length'] = photo['f_length']/photo['sensor_size']*photo['width']
 
 # Known data points
-world_coords = pd.read_csv(photo_in_use.gcp, delimiter=",", header=None)
+world_coords = pd.read_csv(photo['gcp'], delimiter=photo['delimiter'], header=photo['header'])
 X_world = world_coords.iloc[:,2:5] #real world coordinates
 X_cam = world_coords.iloc[:,0:2] # pixel coordinates OR OBSERVED VALUES
 
 # Estimate Camera pose
-camera = Camera(pose_guess, f_length, width, length)
+camera = Camera(photo['pose_guess'], photo['f_length'], photo['width'], photo['length'])
 est_pose = camera.estimate_pose(X_world, X_cam)
 
 # Plot Results
@@ -91,7 +95,7 @@ X_cam_pred = camera.convert_world_to_cam_coords(X_world)
 print('X_cam_true: \n', X_cam)
 print('X_cam_pred: \n', X_cam_pred)
 fig, ax = plt.subplots(1, figsize=(12,8))
-ax.imshow(io.imread(photo_in_use.img))
+ax.imshow(io.imread(photo['img']))
 ax.scatter(X_cam.iloc[:,0],X_cam.iloc[:,1],c="red",s=100)
 ax.scatter(X_cam_pred[:, 0], X_cam_pred[:, 1],c="green",s=100)
 plt.show(fig)
