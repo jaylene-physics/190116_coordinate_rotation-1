@@ -39,7 +39,7 @@ class Camera(object):
       return (X_cam_pred - X_cam_true).values.flatten()
 
     def estimate_pose(self, X_world, X_cam):
-      pose = self.p.copy()
+      pose = self.p
       pose_opt = least_squares(self.residual, pose, method = 'lm', args=(self, X_world, X_cam))
       print(pose_opt)
       self.p = pose_opt.x
